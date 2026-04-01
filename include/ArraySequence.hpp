@@ -127,6 +127,50 @@ public:
         return CreateFromArray(temp);
     }
 
+    Sequence<T>* Map(T (*func)(const T&)) const {
+        DynamicArray<T> temp(this->GetLength());
+        
+        for (size_t i = 0; i < this->GetLength(); i++) {
+            temp[i] = func(this->Get(i));
+        }
+
+        return CreateFromArray(temp);
+    }
+
+    Sequence<T>* Where(bool (*pred)(const T&)) const {
+        DynamicArray<T> temp;
+        size_t count = 0;
+        
+        for (size_t i = 0; i < this->GetLength(); i++) {
+            if (pred(this->Get(i))) {
+                temp.Resize(count + 1);
+                temp[count] = this->Get(i);
+                count++;
+            }
+        }
+
+        return CreateFromArray(temp);
+    }
+
+    T Reduce(T (*func)(const T&, const T&), const T& initial) const {
+        T result = initial;
+
+        for (auto it = this->begin(); it != this->end(); ++it) {
+            result = func(result, *it);
+        }
+
+        return result;
+    }
+
+    long long FindFirst(bool (*pred)(const T&)) const {
+        for (size_t i = 0; i < this->GetLength(); i++) {
+            if (pred(this->Get(i))) {
+                return static_cast<long long>(i);
+            }
+        }
+        return -1LL;
+    }
+
     Sequence<T>* Concat(const Sequence<T>& other) const override {
         DynamicArray<T> temp(this->GetLength() + other.GetLength());
         for (size_t i = 0; i < this->GetLength(); i++) {
