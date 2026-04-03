@@ -1,0 +1,4 @@
+main
+tests_run
+.vscode/
+*.o
