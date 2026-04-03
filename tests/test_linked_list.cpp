@@ -224,3 +224,4 @@ TEST(LinkedListTest, SetElementThrowsOutOfRange) {
     LinkedList<int> list;
     EXPECT_THROW(list.SetElement(0, 1), std::out_of_range);
 }
+

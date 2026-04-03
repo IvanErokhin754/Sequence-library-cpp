@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Iinclude
 SRC = src/main.cpp src/UI.cpp
 APP = app
 
-TEST_SRC = tests/test_dynamic_array.cpp tests/test_linked_list.cpp 
+TEST_SRC = tests/test_dynamic_array.cpp tests/test_linked_list.cpp tests/test_mutable_sequences.cpp tests/test_immutable_sequences.cpp
 TEST_BIN = tests_run
 GTEST_FLAGS = $(shell pkg-config --cflags --libs gtest_main)
 
