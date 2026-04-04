@@ -1,4 +1,13 @@
-main
+# build
+app
 tests_run
-.vscode/
 *.o
+
+# IDE
+.vscode/
+
+# macOS мусор
+.DS_Store
+
+#sanitizer
+*.dSYM/

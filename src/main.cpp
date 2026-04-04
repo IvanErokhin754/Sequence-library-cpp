@@ -1,10 +1,8 @@
 #include <iostream>
-#include "MutableArraySequence.hpp"
+#include "UI.hpp"
 
 int main()
 {
-    MutableArraySequence<int> array;
-    array.AppendInternal(10);
-    std::cout << array[0];
+    StartUi();
     return 0;
 }
