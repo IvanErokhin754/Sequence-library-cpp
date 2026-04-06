@@ -3,7 +3,6 @@
 
 #include <cstddef>
 #include <stdexcept>
-#include <algorithm>
 
 template<typename T>
 class DynamicArray{    
@@ -34,14 +33,14 @@ public:
         return data[i];
     }
     
-    const T &operator[](size_t i) const {
+    const T &operator[](size_t i) const { // const_cast<DynamicArray<T>*> (this)->operator[](i) || (*this)[...]
         if (i >= size)
             throw std::out_of_range("Index larger than size!");
 
         return data[i];
     }
 
-    DynamicArray &operator=(const DynamicArray &other) {
+    DynamicArray &operator=(const DynamicArray &other) { // перенос C11+
         if (this == &other)
             return *this;
 
@@ -59,8 +58,17 @@ public:
 
     void Resize(size_t new_size) {
         if (new_size == size) return;
-        if (new_size == 0) {delete[] data; data = nullptr; size = 0; return;}
-        if (!data) {size = new_size; data = new T[size]; return;}
+        if (new_size == 0) {
+            delete[] data; 
+            data = nullptr; 
+            size = 0; 
+            return;
+        }
+        if (!data) {
+            size = new_size; 
+            data = new T[size]; 
+            return;
+        }
 
         T *new_data = new T[new_size];
         size_t minimum = std::min(new_size, size);

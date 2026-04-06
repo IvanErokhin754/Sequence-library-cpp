@@ -6,6 +6,8 @@
 template <typename T>
 class Sequence {
 public:
+    // взятие итератора
+    // Get[index] иеренести на arraysequence
     virtual const T& Get(size_t index) const = 0;
     virtual const T& GetFirst() const = 0;
     virtual const T& GetLast() const = 0;

@@ -142,8 +142,8 @@ public:
         size_t count = 0;
         
         for (size_t i = 0; i < this->GetLength(); i++) {
-            if (pred(this->Get(i))) {
-                temp.Resize(count + 1);
+            if (pred(this->Get(i))) { // dynamicarray и arraysequence одинаковые операции на разных уровнях (в разных классах)  
+                temp.Resize(count + 1); // capacity доделать
                 temp[count] = this->Get(i);
                 count++;
             }
