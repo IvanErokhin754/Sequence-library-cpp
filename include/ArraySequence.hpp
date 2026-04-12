@@ -13,15 +13,13 @@ protected:
     virtual ArraySequence<T>* CreateFromArray(const DynamicArray<T>& other) const = 0;
     
     void AppendInternal(const T& value) {
-        size_t old_size = array.GetSize();
-        array.Resize(old_size + 1);
-        array[old_size] = value;
+        array.PushBack(value);
     }
 
     void PrependInternal(const T& value) {
         array.Resize(array.GetSize() + 1);
 
-        for (size_t i = array.GetSize() - 1; i > 0; i--)
+        for (size_t i = array.GetSize() - 1; i > 0; --i)
             array[i] = array[i - 1];
 
         array[0] = value;
@@ -32,7 +30,7 @@ protected:
             throw std::out_of_range("Index out of range");
 
         array.Resize(array.GetSize() + 1);
-        for (size_t i = array.GetSize() - 1; i > index; i--) {
+        for (size_t i = array.GetSize() - 1; i > index; --i) {
             array[i] = array[i - 1];
         }
         array[index] = value;
@@ -139,10 +137,9 @@ public:
 
     Sequence<T>* Where(bool (*pred)(const T&)) const {
         DynamicArray<T> temp;
-        size_t count = 0;
         
         for (size_t i = 0; i < this->GetLength(); i++) {
-            if (pred(this->Get(i))) { // dynamicarray и arraysequence одинаковые операции на разных уровнях (в разных классах)  
+            if (pred(this->Get(i))) {
                 temp.PushBack(this->Get(i));
             }
         }

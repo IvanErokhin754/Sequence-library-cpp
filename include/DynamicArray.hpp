@@ -28,6 +28,12 @@ public:
         data = (size == 0) ? nullptr : new T[size];
     }  
     DynamicArray(const DynamicArray &other) : size(other.size), capacity(other.size), data(AllocateAndCopy(other.data, other.size)) {}
+    DynamicArray(T* items, int count) : size(count), capacity(count) {
+        data = (count == 0) ? nullptr : new T[count];
+        for (int i = 0; i < count; i++) {
+            data[i] = items[i];
+        }
+    }
     ~DynamicArray() {
         delete[] data;
     }
