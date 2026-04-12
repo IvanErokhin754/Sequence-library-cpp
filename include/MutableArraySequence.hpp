@@ -16,18 +16,14 @@ public:
     MutableArraySequence(const DynamicArray<T>& other) : ArraySequence<T>(other) {}
     MutableArraySequence(const MutableArraySequence<T>& other) : ArraySequence<T>(other) {}
 
-    T& GetMutable(size_t index) {
+    T& operator[](size_t index) {
         return this->array[index];
     }
-    
+
     const T& operator[](size_t index) const {
         return this->Get(index);
     }
-
-    T& operator[](size_t index) {
-        return GetMutable(index);
-    }
-
+    
     MutableArraySequence<T>* Append(const T& value) {
         this->AppendInternal(value);
         return this;

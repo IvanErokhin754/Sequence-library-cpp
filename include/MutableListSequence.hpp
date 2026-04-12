@@ -16,12 +16,8 @@ public:
     MutableListSequence(const LinkedList<T>& other) : ListSequence<T>(other) {}
     MutableListSequence(const MutableListSequence<T>& other) : ListSequence<T>(other) {}
     
-    T& GetMutable(size_t index) {
-        return this->list.GetElement(index);
-    }
-
     T& operator[](size_t index) {
-        return GetMutable(index);
+        return this->list.GetElement(index);
     }
 
     const T& operator[](size_t index) const {
@@ -52,6 +48,6 @@ public:
         return new MutableListSequence<T>(*this);
     }
 
-} ;
+};
 
 #endif /* MUTABLE_LIST_SEQUENCE_HPP */

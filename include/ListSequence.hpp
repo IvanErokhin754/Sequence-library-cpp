@@ -33,7 +33,7 @@ public:
     ListSequence() : list() {}
     ListSequence(T* items, int count) : list() {
         for (int i = 0; i < count; i++) {
-            list.Append(items[i]);
+            AppendInternal(items[i]);
         }
     }
     ListSequence(const LinkedList<T>& other) : list(other) {}
@@ -67,7 +67,7 @@ public:
         return list.GetLast();
     }
 
-     size_t GetLength() const override {
+    size_t GetLength() const override {
         return list.GetSize();
     } 
 

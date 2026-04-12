@@ -15,6 +15,18 @@ private:
         Node (const T &value) : data(value), next(nullptr) {}
     };
 
+    void Clear() {
+        Node* current = head;
+        while (current != nullptr) {
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+        head = nullptr;
+        tail = nullptr;
+        size = 0;
+    }
+
     Node *head;
     Node *tail;
     size_t size;
@@ -29,17 +41,10 @@ public:
         }
     }
     ~LinkedList() {
-        Node *current = head;
-        while (current != nullptr) {
-            Node *next = current->next;
-            delete current;
-            current = next;
-        }
-        head = nullptr;
-        tail = nullptr;
-        size = 0;
+        Clear();
     }
     
+   
     class Iterator {
         private:
             Node* current;
@@ -111,15 +116,7 @@ public:
         if (this == &other)
             return *this;
         
-        while (head != nullptr) {
-            Node *next = head->next;
-            delete head;
-            head = next;
-        }
-
-        head = nullptr;
-        tail = nullptr;
-        size = 0;
+        Clear();
 
         Node *ptr_other = other.head;
         while (ptr_other != nullptr) {
@@ -185,7 +182,7 @@ public:
         if (index >= size) 
             throw std::out_of_range("Index larger than size");
         
-        Node *ptr = head;
+        const Node *ptr = head;
 
         for (size_t i = 0; i < index; i++){
             ptr = ptr->next;
