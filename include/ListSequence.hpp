@@ -114,26 +114,6 @@ public:
         return CreateFromList(temp);
     }
 
-    T Reduce(T (*func)(const T&, const T&), const T& initial) const {
-        T result = initial;
-
-        for (auto it = this->begin(); it != this->end(); ++it) {
-            result = func(result, *it);
-        }
-
-        return result;
-    }
-
-    long long FindFirst(bool (*pred)(const T&)) const {
-        size_t index = 0;
-
-        for (auto it = this->begin(); it != this->end(); ++it, index++) {
-            if (pred(*it))
-                return static_cast<long long>(index);
-        }
-
-        return -1LL;
-    }
 };
 
 

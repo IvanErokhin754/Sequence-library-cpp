@@ -143,32 +143,11 @@ public:
         
         for (size_t i = 0; i < this->GetLength(); i++) {
             if (pred(this->Get(i))) { // dynamicarray и arraysequence одинаковые операции на разных уровнях (в разных классах)  
-                temp.Resize(count + 1); // capacity доделать
-                temp[count] = this->Get(i);
-                count++;
+                temp.PushBack(this->Get(i));
             }
         }
 
         return CreateFromArray(temp);
-    }
-
-    T Reduce(T (*func)(const T&, const T&), const T& initial) const {
-        T result = initial;
-
-        for (auto it = this->begin(); it != this->end(); ++it) {
-            result = func(result, *it);
-        }
-
-        return result;
-    }
-
-    long long FindFirst(bool (*pred)(const T&)) const {
-        for (size_t i = 0; i < this->GetLength(); i++) {
-            if (pred(this->Get(i))) {
-                return static_cast<long long>(i);
-            }
-        }
-        return -1LL;
     }
 
     Sequence<T>* Concat(const Sequence<T>& other) const override {

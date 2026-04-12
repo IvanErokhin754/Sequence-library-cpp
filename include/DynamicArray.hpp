@@ -8,20 +8,26 @@ template<typename T>
 class DynamicArray{    
 private:
     size_t size;
+    size_t capacity;
     T *data;
 
-public:
-    DynamicArray() : size(0), data(nullptr) {}
-    DynamicArray(size_t size) : size(size) {
-        data = new T[size];
+    static T* AllocateAndCopy(const T* source, size_t count) {
+        if (!count)
+            return nullptr;
+        
+        T* new_data = new T[count];
+        for (size_t i = 0; i < count; i++) {
+            new_data[i] = source[i];
+        }
+        return new_data;
     }
-     DynamicArray(const DynamicArray &other) {
-        size = other.size;
-        data = new T[size];
 
-        for (size_t i = 0; i < size; i++)
-            data[i] = other.data[i];
-    }
+public:
+    DynamicArray() : size(0), capacity(0), data(nullptr) {}
+    DynamicArray(size_t size) : size(size), capacity(size) {
+        data = (size == 0) ? nullptr : new T[size];
+    }  
+    DynamicArray(const DynamicArray &other) : size(other.size), capacity(other.size), data(AllocateAndCopy(other.data, other.size)) {}
     ~DynamicArray() {
         delete[] data;
     }
@@ -33,51 +39,57 @@ public:
         return data[i];
     }
     
-    const T &operator[](size_t i) const { // const_cast<DynamicArray<T>*> (this)->operator[](i) || (*this)[...]
-        if (i >= size)
-            throw std::out_of_range("Index larger than size!");
-
-        return data[i];
+    const T &operator[](size_t i) const {
+        return const_cast<DynamicArray<T>*>(this)->operator[](i);
     }
 
-    DynamicArray &operator=(const DynamicArray &other) { // перенос C11+
+    DynamicArray &operator=(const DynamicArray &other) { 
         if (this == &other)
             return *this;
 
-        T *new_data = new T[other.size];
+        T *new_data = AllocateAndCopy(other.data, other.size);
 
-        for (size_t i = 0; i < other.size; i++) 
-            new_data[i] = other.data[i];
-        
         delete[] data;
         data = new_data;
         size = other.size;
+        capacity = other.size;
 
         return *this;
     }
 
+    void PushBack(const T& value) {
+        Resize(size + 1);
+        data[size - 1] = value;
+    }
+
+    size_t GetCapacity() const {
+        return capacity;
+    }
     void Resize(size_t new_size) {
         if (new_size == size) return;
         if (new_size == 0) {
-            delete[] data; 
-            data = nullptr; 
-            size = 0; 
-            return;
-        }
-        if (!data) {
-            size = new_size; 
-            data = new T[size]; 
+            size = 0;
             return;
         }
 
-        T *new_data = new T[new_size];
-        size_t minimum = std::min(new_size, size);
-        for (size_t i = 0; i < minimum; i++){
+        if (new_size <= capacity) {
+            size = new_size;
+            return;
+        }
+
+        size_t new_capacity = (capacity == 0) ? 1 : capacity;
+        while (new_capacity < new_size) {
+            new_capacity *= 2;
+        }
+
+        T* new_data = new T[new_capacity];
+        for (size_t i = 0; i < size; i++) {
             new_data[i] = data[i];
         }
-        
+
         delete[] data;
         data = new_data;
+        capacity = new_capacity;
         size = new_size;
     }   
 
